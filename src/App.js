@@ -1,27 +1,38 @@
-
+import {Users} from './user';
+import { Planets } from './planets';
 import './App.css';
 
 function App() {
- 
+
+const users =[
+  {name:"pedro", age:23},
+  {name:"pazzo", age:23},
+  {name:"pacci", age:23}, 
+  {name:"papa", age:23}
+  
+];
+const planets = [
+  {name:"mars", isGasPlanet: false},
+  {name:"Earth", isGasPlanet: false},
+  {name: "Jupiter", isGasPlanet:true},
+  {name:"Venust", isGasPlanet:false},
+  {name:"Neptune", isGasPlanet:true},
+  {name:"Urnas", isGasPlanet:true}
+];
   return (
     <div className="App">
-     <Job salary={90000} position= "Senior SDE" company="Amazon"/>
-     <Job salary={12000} position= "Junior SDE" company="Googlr"/>
-     <Job salary={10000} position= "Project Manager" company="Netflix"/>
-    </div>
-  );
-}
-const Job = (props) => {
-  return (
-    <div>
-      <h1>{props.salary}</h1>
-     
-      <h1>{props.position}</h1>
-     
-      <h1>{props.company}</h1> <hr></hr>
-    </div>
-  );
-};
+     {users.map( (user, key) =>{
+          return <Users name={user.name} age={user.age}/>
+     })}
+     {planets.map((planet,key) => 
+      planet.isGasPlanet &&
+      <h1><Planets name={planet.name}/></h1>
+     )}
+      </div>
+      );
+    }
+
+
 
 
 export default App;
