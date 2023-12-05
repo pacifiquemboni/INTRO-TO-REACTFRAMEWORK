@@ -1,0 +1,53 @@
+import './App.css';
+import { useState } from 'react';
+
+function App() {
+  const [count, setCount] = useState(0); //for exercise
+  const [age, setAge] = useState(1);
+  const [inputValue, setInputValue]= useState("");
+  const [showText, setShowText] = useState(true);
+   const [textColor, setTextColor] = useState("green");
+  const increasValue = ()=>{
+    setAge(age +1)
+  }
+  const handleInputChange = (event)=>{
+      setInputValue(event.target.value);
+  };
+  const handleColor = ()=>{
+      setTextColor(textColor === "green" ? "red" : "green");
+  };
+  return (
+    <div className="App">
+      {age}
+      <button onClick={increasValue}>increse value</button><br></br>
+        <input type='text' onChange={handleInputChange}/>
+        {inputValue}
+        <br></br>
+        <button onClick={()=>{
+          setShowText(!showText);
+        }}>show/hide</button>
+        {showText ===true && <h1 style={{color:textColor}}>hi my name is Paccy </h1>}
+        {showText ===true && <button onClick={handleColor}>change color</button>} <br></br>
+        <br></br>
+        {/* //for exercise */}
+        <button onClick={()=>{
+          setCount(count +1);
+        }}>Increase</button>
+        <button onClick={() =>{
+          setCount(count -1);
+        }}>Decrease</button>
+        <button onClick={
+          () =>{ 
+
+            setCount(0)
+          }
+        }>set to zero</button>
+        {count}
+      </div>
+      );
+    }
+
+
+
+
+export default App;
