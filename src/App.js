@@ -1,82 +1,43 @@
-import { useState } from 'react';
+import  Axios  from 'axios';
 import './App.css';
-import {Task} from './task';
+import { useState } from 'react';
+import { useEffect } from 'react';
+
+
 
 function App() {
-  const [todoList, setTodoList]= useState([]);
-  const [newTask, setNewTask] = useState("");
+  const [catfact,setCatFact] = useState("");
+  const [name, setName] = useState("");
+  const [predictAge, setPredictAge] = useState(null);
 
-  const handleChange = (event) =>{
-    setNewTask(event.target.value);
-  };
-
-  const addTask =()=>{
-      const task ={
-        id: todoList.length === 0 ? 1 : todoList[todoList.length-1].id + 1,
-        taskName: newTask,
-        completed: false,
-        important: false,
-      };
-     const newTodoList= [...todoList, task];
-     setTodoList(newTodoList);
-  };
-  const deleteTask =(id)=>{
-    // const newTodoList = todoList.filter((task) =>{
-    //   if (task === taskName){
-    //     return false;
-    //   }else{
-    //     return true;
-    //   }
-
-    // });
-    // setTodoList(newTodoList);
-    setTodoList(todoList.filter((task) => task.id !== id));// this works the same as above function
-  }
-
-  const completeTask =(id) => {
-    setTodoList(
-      todoList.map((task) =>{
-        if (task.id === id) {
-          return {...task, completed: true};
-        }else{
-          return task;
-        }
-      })
-    );
-  };
-
-   const importantTask = (id) => {
-    setTodoList(
-      todoList.map((task) =>{
-        if (task.id === id) {
-          return {...task, important: true};
-        }else{
-          return task;
-        }
-      })
-    );
-   }
+  const fetchCatFact = (()=>{
+    Axios.get("https://catfact.ninja/fact").then((res)=>{
+      setCatFact(res.data.fact);
+    }); 
+  });
+  const fetchData = (()=>{
+    Axios.get(`https://api.agify.io/?name=${name}`).then((res)=>{
+      setPredictAge(res.data);
+    });
+  });
+  useEffect(()=>{
+      fetchCatFact();
+  }, []);
+ 
   return (
-  <div className="App">
-    <div className='addTask'>
-      <input onChange={handleChange}/>
-      <button onClick={addTask}>Add Task</button>
+    <div className="App">
+      <button onClick={fetchCatFact}>Generate Cat Fact</button>
+      <p>{catfact}</p>
+      <input placeholder='Ex Paccy' onChange={(event)=>{
+        setName(event.target.value);
+      }}/>
+      <button onClick={fetchData}>predict age: </button>
+      <p>name:{predictAge?.name}</p>
+      <p>Predicted age:{predictAge?.age}</p>
+      <p>count:{predictAge?.count}</p>
       
     </div>
-
-    <div className='list'>
-      {todoList.map((task) =>{
-        return <Task taskName={task.taskName} 
-        id={task.id} 
-        deleteTask={deleteTask} 
-        completed={task.completed}
-        completeTask={completeTask}
-        important={task.important}
-        importantTask={importantTask}
-        />
-      })}
-    </div>
-  </div>);
+  );
     
 }
 
